@@ -123,5 +123,21 @@ describe('Band, Musician, and Song Models', () => {
     test('can return the longest song', async () => {
         const longestSong = await Song.getLongestSong();
         expect(longestSong.title).toBe("Test Song");
-    });        
+    });
+
+    test('can return all of a band\'s musicians', async () => {
+        const testBand = await Band.create({ name: "Pink Floyd", genre: "Rock" });
+        const musician1 = await Musician.create({ name: "David Gilmour", instrument: "Guitar" });
+        const musician2 = await Musician.create({ name: "Nick Mason", instrument: "Drums" });
+    
+        await testBand.addMusician(musician1);
+        await testBand.addMusician(musician2);
+    
+        const bandWithMusicians = await Band.findByPk(testBand.id, {
+            include: Musician
+        });
+        expect(bandWithMusicians.Musicians.length).toBe(2);
+        expect(bandWithMusicians.Musicians[0].name).toBe("David Gilmour");
+        expect(bandWithMusicians.Musicians[1].name).toBe("Nick Mason");
+    });
 });
