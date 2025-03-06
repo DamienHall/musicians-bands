@@ -5,11 +5,11 @@ const { Song } = require("./models/Song")
 
 // one to many association
 Band.hasMany(Musician);
-Musician.hasOne(Band);
+Musician.belongsTo(Band);
 
 // many to many association
-Band.hasMany(Song);
-Song.hasMany(Band);
+Band.belongsToMany(Song, { through: "BandSongs"});
+Song.belongsToMany(Band, { through: "BandSongs"});
 
 module.exports = {
     Band,

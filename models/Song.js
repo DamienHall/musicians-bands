@@ -14,6 +14,17 @@ Song.init(
     }
 );
 
+Song.prototype.toMinutes = function() {
+    return this.length / 60;
+}
+
+Song.getLongestSong = async function() {
+    const longestSong = await Song.findOne({
+        order: [['length', 'DESC']],
+    });
+    return longestSong;
+};
+
 module.exports = {
     Song
 };
